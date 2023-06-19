@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Listado de Personas</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Listado de Personas</h1>
+
+  <div id="personas-lista"></div>
+
+  <h2>Registro</h2>
+  <form action="/registrar" method="POST">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required>
+
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" name="apellido" required>
+
+    <label for="correo">Correo:</label>
+    <input type="email" id="correo" name="correo" required>
+
+    <label for="cedula">Cédula:</label>
+    <input type="text" id="cedula" name="cedula" required>
+
+    <label for="contrasena">Contraseña:</label>
+    <input type="password" id="contrasena" name="contrasena" required>
+
+    <input type="submit" value="Registrar">
+  </form>
+
+  <script>
+    fetch('/personas')
+      .then(response => response.json())
+      .then(data => {
+        const personasLista = document.getElementById('personas-lista');
+        if (data.length === 0) {
+          personasLista.innerHTML = '<p>No hay personas registradas.</p>';
+        } else {
+          const lista = document.createElement('ul');
+          data.forEach(persona => {
+            const item = document.createElement('li');
+            item.innerText = `Nombre: ${persona.nombre} ${persona.apellido}, Correo: ${persona.correo}, Cédula: ${persona.cedula}, Contraseña: ${persona.contrasena}`;
+            lista.appendChild(item);
+          });
+          personasLista.appendChild(lista);
+        }
+      });
+  </script>
+</body>
+</html>
+
